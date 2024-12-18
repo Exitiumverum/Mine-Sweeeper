@@ -1,0 +1,12 @@
+.table{
+    margin: auto;
+    display: table;
+}
+.table-row{
+    display: table-row;
+}
+.table-cell{
+    display: table-cell;
+    border: 1px solid black;
+    padding: 8px;
+}
