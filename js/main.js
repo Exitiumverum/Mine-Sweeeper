@@ -7,19 +7,19 @@ var gLevel = {
     MINES: 2
 }
 var gGame = {
-    isOn: true,
+    isOn: false,
     shownCount: 0,
     markedCount: 0,
     markedMinesCount: 0,
-    minesCount: 0,
     firstClick: true
 }
-
+// var gMinesCount = 0
 
 function onInit() {
     gGame.isOn = true
     gBoard = []
     buildBoard()
+    resetTimer()
     renderBoard()
     // console.log(gBoard)
 }
@@ -47,13 +47,31 @@ function buildBoard() {
 
 }
 
-function generateMines() {
+function generateMines(elCell) {
     for (let i = 0; i < gLevel.MINES; i++) {
-        var cell = gBoard[+getRandomInt(0, +gLevel.SIZE - 1)][+getRandomInt(0, +gLevel.SIZE - 1)]
-        console.log(cell)
+        console.log(elCell.dataset.i)
+
+        let iIndex = +getRandomInt(0, gLevel.SIZE - 1)
+        let jIndex = +getRandomInt(0, gLevel.SIZE - 1)
+        while (elCell === gBoard[iIndex][jIndex]) {
+            iIndex = +getRandomInt(0, gLevel.SIZE - 1)
+            jIndex = +getRandomInt(0, gLevel.SIZE - 1)
+        }
+
+        var cell = gBoard[iIndex][jIndex]
+        // console.log(cell)
         cell.isMine = true
         gGame.minesCount++
-        console.log(' mines: ', gGame.minesCount)
+        // console.log(' mines: ', gGame.minesCount)
+    }
+    renderBoard()
+}
+
+function destroyMines() {
+    for (let i = 0; i < gLevel.SIZE; i++) {
+        for (let j = 0; j < gLevel.SIZE; j++) {
+            gBoard[i][j].isMine = false
+        }
     }
 }
 
@@ -138,6 +156,7 @@ function revealNgCells(elCell) {
             elCell.classList.remove('hidden')
         }
     }
+    console.log(gBoard)
 }
 
 
@@ -147,9 +166,12 @@ function clickCell(elCell) {
 
 
     if (gGame.firstClick) {
+        destroyMines()
         startTimer()
-        generateMines()
+        generateMines(elCell)
+        gGame.markedMinesCount = gLevel.MINES
         gGame.firstClick = false
+        // gMinesCount = gGame.minesCount
     }
 
     if (elCell.classList.contains('mine')) {
@@ -189,19 +211,27 @@ function gameLose() {
 }
 
 function handleRightClick(event) {
+    event.preventDefault()
+
     if (!gGame.isOn) return
+
+
     gGame.markedCount++
     document.querySelector('.marked-count').innerText = `marked: ${gGame.markedCount}`
     checkGameOver()
 
-    event.preventDefault()
     console.log('hy')
 
     let iCellIndex = event.target.dataset.i
     let jCellIndex = event.target.dataset.j
     let cell = gBoard[iCellIndex][jCellIndex]
+    if (!cell.isHidden) return
 
-    if (cell.isMine) gGame.markedMinesCount++
+
+    if (cell.isMine) {
+        gGame.markedMinesCount--
+        // gMinesCount--
+    }
 
     console.log(gGame.markedMinesCount)
 
@@ -212,7 +242,7 @@ function handleRightClick(event) {
 }
 
 function checkGameOver() {
-    if (gGame.markedMinesCount === gGame.minesCount) {
+    if (gGame.markedMinesCount === 0) {
         clearInterval(gGame.timerInterval)
         gGame.isOn = false
         openModal('VICTORY')
@@ -275,6 +305,5 @@ function difficulityBtns(elBtn) {
     console.log(gLevel)
 
     gGame.firstClick = true
-    buildBoard()
-    renderBoard()
+    onInit()
 }
