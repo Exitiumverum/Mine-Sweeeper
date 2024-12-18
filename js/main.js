@@ -47,12 +47,13 @@ function buildBoard() {
 
 }
 
-function generateMines(){
+function generateMines() {
     for (let i = 0; i < gLevel.MINES; i++) {
         var cell = gBoard[+getRandomInt(0, +gLevel.SIZE - 1)][+getRandomInt(0, +gLevel.SIZE - 1)]
         console.log(cell)
         cell.isMine = true
         gGame.minesCount++
+        console.log(' mines: ', gGame.minesCount)
     }
 }
 
@@ -117,7 +118,7 @@ function countNgMines(iIndex, jIndex) {
 }
 
 function revealNgCells(elCell) {
-    console.log(elCell)
+    // console.log(elCell)
     let iIndex = +elCell.dataset.i
     let jIndex = +elCell.dataset.j
 
@@ -129,6 +130,7 @@ function revealNgCells(elCell) {
             let cell = gBoard[i][j]
 
             if (cell.isMine) continue
+
 
             console.log(i, j)
             cell.mineNgs = countNgMines(i, j)
@@ -142,6 +144,7 @@ function revealNgCells(elCell) {
 function clickCell(elCell) {
     // console.log(elCell)
     if (!gGame.isOn) return
+
 
     if (gGame.firstClick) {
         startTimer()
@@ -182,6 +185,7 @@ function gameLose() {
     }
     clearInterval(gGame.timerInterval)
     openModal('Lose')
+    onInit()
 }
 
 function handleRightClick(event) {
@@ -229,6 +233,7 @@ function openModal(innerText) {
 
 function closeModal() {
     document.querySelector('.modal').style.display = 'none'
+    gGame.firstClick = true
     resetTimer()
 }
 
@@ -244,7 +249,8 @@ function startTimer() {
     }, 37)
 }
 
-function resetTimer(){
+function resetTimer() {
+    clearInterval(gGame.timerInterval)
     document.querySelector('.timer').innerText = 'Time: '
 }
 
@@ -268,6 +274,7 @@ function difficulityBtns(elBtn) {
     }
     console.log(gLevel)
 
+    gGame.firstClick = true
     buildBoard()
     renderBoard()
 }

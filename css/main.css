@@ -1,6 +1,8 @@
 :root{
     --cell-bg-color: rgb(10, 10, 11);
-    --modal-bg-color: green;
+    --modal-bg-color: rgb(21, 28, 123);
+    --hover-bg-color: rgba(0, 0, 0, 0.2); 
+    --text-color: #000000;
 }
 
 .heading-section{
@@ -10,6 +12,7 @@
 .table{
     margin: auto;
     display: table;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 th, td {
     border: 3px solid #868595;
@@ -18,13 +21,17 @@ th, td {
     margin: 0;
     text-align: center;
     background-color: var(--cell-bg-color);
-    /* background-color: #f0f0f0; */
+    transition: background-color 0.3s;
+}
+th:hover, td:hover {
+    background-color: var(--hover-bg-color); 
 }
 
 .cell{
     background-color: whitesmoke;
-    color: black;
+    color: var(--text-color);
     padding: auto;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 .hidden{
     background-color: var(--cell-bg-color);
@@ -42,6 +49,7 @@ th, td {
     text-align: center;
     font-size: 2rem;
     background-color: var(--modal-bg-color);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .modal .close-btn{
@@ -52,10 +60,10 @@ th, td {
     border-radius: 5px;
 }
 footer{
-    background-color: green;
+    background-color: var(--modal-bg-color);
     text-align: center;
+    margin-top: 10px;
     font-size: 3rem;
-    position: fixed;
-    bottom: 0;
     width: 100%;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.2); 
 }
