@@ -258,9 +258,9 @@ function handleRightClick(event) {
 function checkGameOver() {
     if (gGame.markedMinesCount === gLevel.MINES) {
         clearInterval(gGame.timerInterval)
-        resetGame()
         openModal('VICTORY')
         console.log('victoryyyy')
+        onInit()
     }
 }
 
