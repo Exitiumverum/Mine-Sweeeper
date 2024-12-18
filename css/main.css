@@ -1,12 +1,28 @@
+:root{
+    --cell-bg-color: rgb(10, 10, 11);
+}
+
 .table{
     margin: auto;
     display: table;
 }
-.table-row{
-    display: table-row;
+th, td {
+    border: 3px solid #868595;
+    border-radius: 4px;
+    padding: 20px;
+    margin: 0;
+    text-align: center;
+    background-color: var(--cell-bg-color);
+    /* background-color: #f0f0f0; */
 }
-.table-cell{
-    display: table-cell;
-    border: 1px solid black;
-    padding: 8px;
+
+.hidden{
+    background-color: var(--cell-bg-color);
+}
+.cell{
+    color: white;
+    padding: 20px;
+}
+.marked{
+    background-color: var(--cell-bg-color);
 }
