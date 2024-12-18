@@ -14,14 +14,22 @@ var gGame = {
     firstClick: true
 }
 // var gMinesCount = 0
-
-function onInit() {
+function resetGame(){
+    gBoard = []
     gGame.isOn = true
+    gGame.shownCount = 0
     gGame.markedCount = 0
     gGame.markedMinesCount = 0
-    gBoard = []
-    buildBoard()
+    gGame.firstClick = true
+
+    document.querySelector('.marked-count').innerText = `marked:`
+
     resetTimer()
+}
+
+function onInit() {
+    resetGame()
+    buildBoard()
     renderBoard()
     // console.log(gBoard)
 }
@@ -171,7 +179,7 @@ function clickCell(elCell) {
         destroyMines()
         startTimer()
         generateMines(elCell)
-        gGame.markedMinesCount = gLevel.MINES
+        // gGame.markedMinesCount = gLevel.MINES
         gGame.firstClick = false
         // gMinesCount = gGame.minesCount
     }
@@ -187,7 +195,7 @@ function clickCell(elCell) {
     if (elCell.classList.contains('hidden')) {
         revealNgCells(elCell)
         renderBoard()
-        console.log(elCell)
+        // console.log(elCell)
     }
 }
 
@@ -231,11 +239,10 @@ function handleRightClick(event) {
 
 
     if (cell.isMine) {
-        gGame.markedMinesCount--
-        // gMinesCount--
+        gGame.markedMinesCount++
+        console.log('mine count: ', gGame.markedMinesCount, 'mines:' , gLevel.MINES)
     }
-
-    console.log(gGame.markedMinesCount)
+    // console.log(gGame.markedMinesCount)
 
     gBoard[iCellIndex][jCellIndex].isMarked = true
     renderBoard()
@@ -244,9 +251,9 @@ function handleRightClick(event) {
 }
 
 function checkGameOver() {
-    if (gGame.markedMinesCount === 0) {
+    if (gGame.markedMinesCount === gLevel.MINES) {
         clearInterval(gGame.timerInterval)
-        gGame.isOn = false
+        resetGame()
         openModal('VICTORY')
         console.log('victoryyyy')
     }
@@ -266,7 +273,7 @@ function openModal(innerText) {
 function closeModal() {
     document.querySelector('.modal').style.display = 'none'
     gGame.firstClick = true
-    resetTimer()
+    onInit()
 }
 
 function startTimer() {
