@@ -1,45 +1,90 @@
-:root{
+:root {
     --cell-bg-color: rgb(10, 10, 11);
     --modal-bg-color: rgb(21, 28, 123);
-    --hover-bg-color: rgba(0, 0, 0, 0.2); 
+    --hover-bg-color: rgba(0, 0, 0, 0.2);
     --text-color: #000000;
 }
 
-.heading-section{
+.border-board{
+    margin: auto;
+    min-width: 300px;
+    width: fit-content;
+    border-color: #000000;
+    border-width: 2px;
+    border-style: solid;
+    padding-bottom: 8px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.heading-section {
     text-align: center;
 }
 
-.table{
+.table {
     margin: auto;
     display: table;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
-th, td {
+
+th,
+td {
     border: 3px solid #868595;
-    border-radius: 4px;
+    border-radius: 8px;
     padding: 20px;
     margin: 0;
     text-align: center;
     background-color: var(--cell-bg-color);
-    transition: background-color 0.3s;
-}
-th:hover, td:hover {
-    background-color: var(--hover-bg-color); 
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
+    /* Added box-shadow transition */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    /* Initial shadow for depth */
 }
 
-.cell{
+th:hover,
+td:hover {
+    cursor: pointer;
+    background-color: var(--hover-bg-color);
+    transform: translateY(-4px);
+    /* Lift effect on hover */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.lower-section {
+    text-align: center;
+}
+
+.lower-section button {
+    border: none;
+    border-radius: 5px;
+    padding: 8px;
+    color: white;
+    background-color: var(--cell-bg-color);
+    transition: 300ms;
+}
+
+.lower-section button:hover {
+    cursor: pointer;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px #000000;
+}
+
+.cell {
     background-color: whitesmoke;
     color: var(--text-color);
     padding: auto;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-.hidden{
+
+.hidden {
     background-color: var(--cell-bg-color);
 }
-.marked{
+
+.marked {
     background-color: var(--cell-bg-color);
 }
-.modal{
+
+.modal {
     margin-top: 60px;
     padding: auto;
     display: none;
@@ -52,18 +97,29 @@ th:hover, td:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.modal .close-btn{
+.modal .close-btn {
     position: absolute;
     top: 10px;
     right: 10px;
     border: none;
     border-radius: 5px;
+    background-color: var(--primary-color);
+    /* Added background color */
+    color: #ffffff;
+    /* Changed text color for better contrast */
+    padding: 10px;
+    /* Added padding for better click area */
+    cursor: pointer;
+    /* Change cursor to pointer */
 }
-footer{
+
+footer {
     background-color: var(--modal-bg-color);
     text-align: center;
     margin-top: 10px;
     font-size: 3rem;
     width: 100%;
-    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.2); 
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    /* Added padding for better spacing */
 }
