@@ -277,7 +277,6 @@ function openModal(innerText) {
 
 function closeModal() {
     document.querySelector('.modal').style.display = 'none'
-    gGame.firstClick = true
     onInit()
 }
 
