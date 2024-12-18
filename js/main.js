@@ -17,6 +17,8 @@ var gGame = {
 
 function onInit() {
     gGame.isOn = true
+    gGame.markedCount = 0
+    gGame.markedMinesCount = 0
     gBoard = []
     buildBoard()
     resetTimer()
