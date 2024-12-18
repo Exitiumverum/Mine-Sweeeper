@@ -59,7 +59,9 @@ function buildBoard() {
 
 function generateMines(elCell) {
     for (let i = 0; i < gLevel.MINES; i++) {
-        console.log(elCell.dataset.i)
+        console.log('elCell: ', elCell.dataset.i)
+        console.log('elCell: ', elCell.dataset.j)
+        console.log('elCell: ', elCell)
 
         let iIndex = +getRandomInt(0, gLevel.SIZE - 1)
         let jIndex = +getRandomInt(0, gLevel.SIZE - 1)
