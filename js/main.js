@@ -14,7 +14,7 @@ var gGame = {
     firstClick: true
 }
 // var gMinesCount = 0
-function resetGame(){
+function resetGame() {
     gBoard = []
     gGame.isOn = true
     gGame.shownCount = 0
@@ -59,13 +59,16 @@ function buildBoard() {
 
 function generateMines(elCell) {
     for (let i = 0; i < gLevel.MINES; i++) {
-        console.log('elCell: ', elCell.dataset.i)
-        console.log('elCell: ', elCell.dataset.j)
-        console.log('elCell: ', elCell)
+        // console.log('elCell: ', elCell.dataset.i)
+        // console.log('elCell: ', elCell.dataset.j)
+        // // console.log('elCell: ', elCell)
 
         let iIndex = +getRandomInt(0, gLevel.SIZE - 1)
         let jIndex = +getRandomInt(0, gLevel.SIZE - 1)
-        while (elCell === gBoard[iIndex][jIndex]) {
+        console.log('i j Index', iIndex, jIndex)
+
+        while (iIndex === +elCell.dataset.i && jIndex === +elCell.dataset.j) {
+            // console.log('i j Index', iIndex, jIndex)
             iIndex = +getRandomInt(0, gLevel.SIZE - 1)
             jIndex = +getRandomInt(0, gLevel.SIZE - 1)
         }
@@ -242,7 +245,7 @@ function handleRightClick(event) {
 
     if (cell.isMine) {
         gGame.markedMinesCount++
-        console.log('mine count: ', gGame.markedMinesCount, 'mines:' , gLevel.MINES)
+        console.log('mine count: ', gGame.markedMinesCount, 'mines:', gLevel.MINES)
     }
     // console.log(gGame.markedMinesCount)
 
