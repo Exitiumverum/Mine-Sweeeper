@@ -11,8 +11,8 @@ var gGame = {
     shownCount: 0,
     markedCount: 0,
     markedMinesCount: 0,
-    secsPassefd: 0,
-    minesCount: 0
+    minesCount: 0,
+    firstClick: true
 }
 
 
@@ -43,9 +43,13 @@ function buildBoard() {
             gBoard[i][j] = createCell()
         }
     }
-    // !!!change this loop according to the game level!!!
-    for (let i = 0; i < 2; i++) {
-        var cell = gBoard[+getRandomInt(0, +gLevel.SIZE)][+getRandomInt(0, +gLevel.SIZE)]
+    // console.log(gBoard)
+
+}
+
+function generateMines(){
+    for (let i = 0; i < gLevel.MINES; i++) {
+        var cell = gBoard[+getRandomInt(0, +gLevel.SIZE - 1)][+getRandomInt(0, +gLevel.SIZE - 1)]
         console.log(cell)
         cell.isMine = true
         gGame.minesCount++
@@ -139,6 +143,11 @@ function clickCell(elCell) {
     // console.log(elCell)
     if (!gGame.isOn) return
 
+    if (gGame.firstClick) {
+        startTimer()
+        generateMines()
+        gGame.firstClick = false
+    }
 
     if (elCell.classList.contains('mine')) {
         elCell.classList.remove('hidden')
@@ -171,10 +180,14 @@ function gameLose() {
             }
         }
     }
+    clearInterval(gGame.timerInterval)
+    openModal('Lose')
 }
 
 function handleRightClick(event) {
-    if(!gGame.isOn) return
+    if (!gGame.isOn) return
+    gGame.markedCount++
+    document.querySelector('.marked-count').innerText = `marked: ${gGame.markedCount}`
     checkGameOver()
 
     event.preventDefault()
@@ -188,19 +201,73 @@ function handleRightClick(event) {
 
     console.log(gGame.markedMinesCount)
 
-        gBoard[iCellIndex][jCellIndex].isMarked = true
+    gBoard[iCellIndex][jCellIndex].isMarked = true
     renderBoard()
     checkGameOver()
     // console.log(gBoard)
 }
 
 function checkGameOver() {
-    if(gGame.markedMinesCount === gGame.minesCount){
+    if (gGame.markedMinesCount === gGame.minesCount) {
+        clearInterval(gGame.timerInterval)
         gGame.isOn = false
+        openModal('VICTORY')
         console.log('victoryyyy')
     }
 }
 
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min
+}
+
+function openModal(innerText) {
+    let modal = document.querySelector('.modal')
+
+    document.querySelector('.modal p').innerText = innerText
+    modal.style.display = 'block'
+}
+
+function closeModal() {
+    document.querySelector('.modal').style.display = 'none'
+    resetTimer()
+}
+
+function startTimer() {
+    gGame.startTime = new Date()
+    gGame.timerInterval = setInterval(() => {
+        const elapsedTime = new Date() - gGame.startTime
+        const seconds = Math.floor(elapsedTime / 1000)
+        const milliseconds = elapsedTime % 1000
+        // Format milliseconds to always have 3 digits
+        const formattedMilliseconds = milliseconds.toString().padStart(3, '0')
+        document.querySelector('.timer').innerText = `Time: ${seconds}.${formattedMilliseconds}`
+    }, 37)
+}
+
+function resetTimer(){
+    document.querySelector('.timer').innerText = 'Time: '
+}
+
+
+function difficulityBtns(elBtn) {
+    // console.log(elBtn)
+    if (elBtn.classList.contains('hardcore-btn')) {
+        gLevel.SIZE = 12
+        gLevel.MINES = 32
+        console.log('hardcore')
+    }
+    if (elBtn.classList.contains('tough-btn')) {
+        gLevel.SIZE = 8
+        gLevel.MINES = 14
+        console.log('tough')
+    }
+    if (elBtn.classList.contains('easy-btn')) {
+        gLevel.SIZE = 4
+        gLevel.MINES = 2
+        console.log('easy')
+    }
+    console.log(gLevel)
+
+    buildBoard()
+    renderBoard()
 }

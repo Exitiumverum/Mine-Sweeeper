@@ -1,5 +1,10 @@
 :root{
     --cell-bg-color: rgb(10, 10, 11);
+    --modal-bg-color: green;
+}
+
+.heading-section{
+    text-align: center;
 }
 
 .table{
@@ -16,13 +21,41 @@ th, td {
     /* background-color: #f0f0f0; */
 }
 
+.cell{
+    background-color: whitesmoke;
+    color: black;
+    padding: auto;
+}
 .hidden{
     background-color: var(--cell-bg-color);
 }
-.cell{
-    color: white;
-    padding: 20px;
-}
 .marked{
     background-color: var(--cell-bg-color);
+}
+.modal{
+    margin-top: 60px;
+    padding: auto;
+    display: none;
+    border: none;
+    width: 50vw;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 2rem;
+    background-color: var(--modal-bg-color);
+}
+
+.modal .close-btn{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border: none;
+    border-radius: 5px;
+}
+footer{
+    background-color: green;
+    text-align: center;
+    font-size: 3rem;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
 }

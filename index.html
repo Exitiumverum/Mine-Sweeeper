@@ -7,12 +7,28 @@
     <title>Document</title>
 </head>
 <body onload="onInit()">
-
+    <div class="heading-section">
+        <h1 class="header">Mine Sweeper</h1>
+        <h2 class="marked-count">Marked:</h2>
+        <h2 class="timer">Time: </h2>
+    </div>
+    <dialog class="modal">
+        <button onclick="closeModal(this)" class="close-btn">X</button>
+        <p class="text">Hello</p>
+    </dialog>
     <table class="table">
         <tbody class="game-board">
 
         </tbody>
     </table>
+    <div>
+        <h2>difficulity</h2>
+        <button onclick="difficulityBtns(this)" class="easy-btn">Easy</button>
+        <button onclick="difficulityBtns(this)" class="tough-btn">Tough</button>
+        <button onclick="difficulityBtns(this)" class="hardcore-btn">HARDCORE</button>
+    </div>
+
+    <!-- <footer>Dan Tayari</footer> -->
     
 </body>
 <script src="js/main.js"></script>
