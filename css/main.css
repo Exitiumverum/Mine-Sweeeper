@@ -123,3 +123,17 @@ footer {
     padding: 20px;
     /* Added padding for better spacing */
 }
+.social-media{
+    text-align: center;
+}
+.social-media img{
+    width: 150px;
+    height: auto;
+    display: inline-block;
+    margin-right: 5px; 
+    transition: 300ms;
+}
+.social-media img:hover{
+    cursor: pointer;
+    width: 170px;
+}

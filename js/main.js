@@ -11,8 +11,10 @@ var gGame = {
     shownCount: 0,
     markedCount: 0,
     markedMinesCount: 0,
+    minesCount: 0,
     firstClick: true
 }
+var gRevealedCells = []
 // var gMinesCount = 0
 function resetGame() {
     gBoard = []
@@ -131,7 +133,7 @@ function renderBoard() {
 
 function countNgMines(iIndex, jIndex) {
     let mineNgCount = 0
-    console.log(iIndex, jIndex)
+    // console.log(iIndex, jIndex)
 
     for (let i = iIndex - 1; i <= iIndex + 1; i++) {
         for (let j = jIndex - 1; j <= jIndex + 1; j++) {
@@ -145,34 +147,86 @@ function countNgMines(iIndex, jIndex) {
             if (cell.isMine) mineNgCount++
         }
     }
-    console.log(mineNgCount)
+    // console.log(mineNgCount)
     gBoard[iIndex][jIndex].mineNgs = mineNgCount
     return mineNgCount
 }
 
-function revealNgCells(elCell) {
-    // console.log(elCell)
-    let iIndex = +elCell.dataset.i
-    let jIndex = +elCell.dataset.j
+function revealCell(elCell, i, j) {
+    let cell = gBoard[i][j]
+    if (i < 0 || i > gLevel.SIZE - 1) return
+    if (j < 0 || j > gLevel.SIZE - 1) return
 
-    for (let i = iIndex - 1; i <= iIndex + 1; i++) {
-        for (let j = jIndex - 1; j <= jIndex + 1; j++) {
-            if (i < 0 || i > gLevel.SIZE - 1) continue
-            if (j < 0 || j > gLevel.SIZE - 1) continue
-            // if (i === iIndex && j === jIndex) continue
-            let cell = gBoard[i][j]
+    if (cell.isMine) return
+    if (cell.isMarked) return
 
-            if (cell.isMine) continue
-
-
-            console.log(i, j)
-            cell.mineNgs = countNgMines(i, j)
-            cell.isHidden = false
-            elCell.classList.remove('hidden')
-        }
-    }
-    console.log(gBoard)
+    // console.log(i, j)
+    cell.mineNgs = countNgMines(i, j)
+    cell.isHidden = false
+    elCell.classList.remove('hidden')
+    gRevealedCells.push([i, j])
 }
+
+function revealNgCells(elCell, iIndex, jIndex) {
+    let lastRowIndex = gBoard.length - 1
+    let lastColIndex = gBoard[lastRowIndex].length - 1
+    let lastCell = gBoard[lastRowIndex][lastColIndex]
+
+    //reveal all upper cells
+    for (let i = iIndex; i >= 0; i--) {
+        for (let j = jIndex; j >= 0; j--) {
+            if (gBoard[i][j].isMine) {
+                j = 0
+                console.log(j)
+                continue
+                // i--
+            }
+            // if (i === iIndex && j === jIndex) continue
+            revealCell(elCell, i, j)
+            console.log(i, j)
+        }
+        for (let j = jIndex; j <= lastColIndex; j++) {
+            if (gBoard[i][j].isMine) {
+                j = lastColIndex
+                console.log(j)
+                continue
+                // i--
+            }
+            // if (i === iIndex && j === jIndex) continue
+            revealCell(elCell, i, j)
+            console.log(i, j)
+        }
+        if (gBoard[i][jIndex].isMine) return
+    }
+    //reveal all lower cells
+    for (let i = iIndex; i <= lastRowIndex; i++) {
+        for (let j = jIndex; j >= 0; j--) {
+            if (gBoard[i][j].isMine) {
+                j = 0
+                console.log(j)
+                continue
+                // i--
+            }
+            // if (i === iIndex && j === jIndex) continue
+            revealCell(elCell, i, j)
+            console.log(i, j)
+        }
+        for (let j = jIndex; j <= lastColIndex; j++) {
+            if (gBoard[i][j].isMine) {
+                j = lastColIndex
+                console.log(j)
+                continue
+                // i--
+            }
+            // if (i === iIndex && j === jIndex) continue
+            revealCell(elCell, i, j)
+            console.log(i, j)
+        }
+        if (gBoard[i][jIndex].isMine) return
+    }
+
+}
+
 
 
 function clickCell(elCell) {
@@ -180,10 +234,12 @@ function clickCell(elCell) {
     if (!gGame.isOn) return
 
 
+
     if (gGame.firstClick) {
         destroyMines()
         startTimer()
         generateMines(elCell)
+        // console.log ('mines:' , gGame.minesCount)
         // gGame.markedMinesCount = gLevel.MINES
         gGame.firstClick = false
         // gMinesCount = gGame.minesCount
@@ -198,7 +254,9 @@ function clickCell(elCell) {
         return
     }
     if (elCell.classList.contains('hidden')) {
-        revealNgCells(elCell)
+        let iIndex = +elCell.dataset.i
+        let jIndex = +elCell.dataset.j
+        revealNgCells(elCell, iIndex, jIndex)
         renderBoard()
         // console.log(elCell)
     }
@@ -229,6 +287,7 @@ function handleRightClick(event) {
     event.preventDefault()
 
     if (!gGame.isOn) return
+    if (gGame.firstClick) return
 
 
     gGame.markedCount++
